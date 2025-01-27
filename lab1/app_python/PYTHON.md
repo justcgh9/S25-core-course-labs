@@ -27,27 +27,24 @@ and running (IMO), it is more performant, native asynchronous support is great, 
 ## Used Practices and Standards
 
 1. PEP8
-    - Proper indentation and spacing
-    - Clear naming
-    - Limited line length
-    - Organized imports
+    + Proper indentation and spacing
+    + Clear naming
+    + Limited line length
+    + Organized imports
 
 2. Project Structure
-    - Application logic is located in the app/ directory
-    - Static files (html) are in a dedicated templates/ folder
-    - __init__.py file to signal that it is a package for modular usage
-    - main.py is a starting point of the application
-    - Bash script for simpler startup
+    + Application logic is located in the app/ directory
+    + Static files (html) are in a dedicated templates/ folder
+    + **init__.py file to signal that it is a package for modular usage
+    + main.py is a starting point of the application
+    + Bash script for simpler startup
 
 3. FastAPI practices
-    - Usage of appropraite HTTP methods
-    - Dynamic templating
-    - Typed function parameters
+    + Usage of appropraite HTTP methods
+    + Dynamic templating
+    + Typed function parameters
 
 4. Dependency management
-    - Clean requirements.txt that specifies only necessary dependencies
+    + Clean requirements.txt that specifies only necessary dependencies
 
 5. Semantic HTML
-
-
-
