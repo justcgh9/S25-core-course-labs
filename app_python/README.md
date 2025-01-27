@@ -18,13 +18,13 @@ This is a python application built with FastAPI and jinja2 to display current ti
 
     ```bash
     git clone https://github.com/justcgh9/S25-core-course-labs.git
-    cd S25-core-course-labs/lab1/app_python
+    cd S25-core-course-labs/app_python
     ```
 
 2. Install the dependencies
 
     ```bash
-    pip Install -r requirements.txt
+    pip install -r requirements.txt
     ```
 
 ## Usage
