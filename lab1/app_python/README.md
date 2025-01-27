@@ -15,12 +15,14 @@ This is a python application built with FastAPI and jinja2 to display current ti
 ## Installation
 
 1. Clone the repo:
+
     ```bash
     git clone https://github.com/justcgh9/S25-core-course-labs.git
     cd S25-core-course-labs/lab1/app_python
     ```
 
 2. Install the dependencies
+
     ```bash
     pip Install -r requirements.txt
     ```
@@ -28,12 +30,13 @@ This is a python application built with FastAPI and jinja2 to display current ti
 ## Usage
 
 1. Run the run.sh script:
+
     ```bash
     bash run.sh
     ```
 
 2. Visit the page in the browser by this url:
-    ```
+
+    ```bash
     http://localhost:8080/
     ```
-
