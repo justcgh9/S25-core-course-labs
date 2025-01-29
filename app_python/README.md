@@ -40,3 +40,40 @@ This is a python application built with FastAPI and jinja2 to display current ti
     ```bash
     http://localhost:8080/
     ```
+
+## Docker
+
+This is an instruction for running the application in a docker container
+
+First of all, there is a choice: to build or to pull the image.
+After that you will be able to run this image in a docker container
+
+### Build the image
+
+There is a [Dockerfile](/app_python/Dockerfile) in this project. To build the image use this script
+
+```bash
+docker build -t moscow-time-app .
+```
+
+### Pull the image
+
+Alternative approach: pull the image from the dockerhub
+
+```bash
+docker pull justcgh/moscow-time-app:latest
+```
+
+### Run the image
+
+If you built the image use this script:
+
+```bash
+docker run -p 8080:8080 moscow-time-app
+```
+
+If you pulled it:
+
+```bash
+docker run -p 8080:8080 justcgh/moscow-time-app:latest
+```

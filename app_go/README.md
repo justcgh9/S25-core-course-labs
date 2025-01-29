@@ -40,9 +40,9 @@ This is an url shortener developed with golang and htmx
 
     ```yaml
     env: "local"
-    storage_path: "./storage/storage.db"
+    storage_path: "./storage.db"
     http_server:
-        address: "localhost:8080"
+        address: "0.0.0.0:8080"
         timeout: 4s
         iddle_timeout: 60s
     ```
