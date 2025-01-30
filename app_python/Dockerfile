@@ -1,8 +1,8 @@
-FROM python:3.12.7-alpine
+FROM python:3.12.7-slim
 
 WORKDIR /usr/src/app
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup --system appgroup && useradd --system appuser --groups appgroup
 
 COPY requirements.txt .
 

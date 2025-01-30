@@ -82,3 +82,51 @@ Now your service must be up on the port you specified (by default :8080), here i
 - POST /urls - Create an alias for an url. Takes a form-data body: url - required string, a url that you are willing to create an alias for, alias - optional string, the desired alias. It will return a piece of html that will be added to the list of urls on the management page
 
 - DELETE /urls?alias= - Delete a url by alias. Returns OK on success, an error otherwise.
+
+## **Docker**  
+
+This application can be containerized using Docker. Below are the instructions to build, pull, and run the container.  
+
+### **How to build?**  
+
+If you decide to build on your own, checkout your database path in config, if there are directories that are not created in a Dockerfile, add a dedicated build step, or in the logs you will see that sqlite could not find the path (its not necessary to create .db file, just all the directories). If I didn't really care, I would have just pulled the image.
+
+```sh
+docker build --build-arg config_path=./config/local.yaml -t justcgh/url-shortener .
+```
+
+### **How to pull?**  
+
+```sh
+docker pull justcgh/url-shortener:latest
+```
+
+### **How to run?**  
+
+```sh
+docker run -p 8080:8080 justcgh/url-shortener
+```
+
+## **Distroless Image Version**  
+
+A Distroless-based image is also available for enhanced security and minimal footprint. 
+
+### **How to build the Distroless Image?**  
+
+There are also db issues here. SQLite needs an access to the filesystem to operate correctly, which is available only for /tmp folder (I spent quite a lot of time to find that out) . That's why I would recommend to put something like /tmp/storage.db to your config as db path. 
+
+```sh
+docker build --build-arg config_path=./config/local.yaml -t url-shortener-distroless -f distroless.Dockerfile .
+```
+
+### **How to pull the Distroless Container?**
+
+```sh
+docker pull justsgh/url-shortener-distroless
+```
+
+### **How to run the Distroless Container?**  
+
+```sh
+docker run -p 8080:8080 url-shortener-distroless
+```

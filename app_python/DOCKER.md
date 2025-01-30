@@ -24,3 +24,21 @@ In a dockerfile i create an appuser account, and then switch to it to minimize t
 ## Dockerfile instructions
 
 When composing the dockerfile I used the instructions for FROM, RUN, CMD, EXPOSE, COPY, USER.
+
+## Distroless Images
+
+I have explored the use of Distroless images, which are designed to contain only the application and its runtime dependencies, without any extra packages that are typically included in traditional base images. Apparently, there are a bunch of compatibility issues, since I have spent a couple hours figuring out the issues with my dockerfile, when problem turned out to be the python image version (I have tried 3.12, 3.9, 3.10 both alpine and slim just to find out that I needed the 3.11-slim)
+
+### Steps Taken
+
+1. **Built the application with a slim Python image** (`python:3.11-slim`).
+2. **Installed dependencies** and copied the necessary files into the container.
+3. **Used Distroless image** (`gcr.io/distroless/python3-debian12:nonroot`) for the final image to reduce the attack surface and image size.
+4. **Ensured the application runs with non-root privileges** using the `nonroot` tag.
+
+### Distroless Image vs. Previous Image
+
+- **Size**: The size of the Distroless-based image is significantly smaller because it does not include unnecessary tools, shells, or package managers.
+- **Security**: The Distroless image has a smaller attack surface since it contains only the essential runtime environment, with no shell or package manager available.
+
+![Image size comparison](image.png)

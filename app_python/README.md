@@ -77,3 +77,44 @@ If you pulled it:
 ```bash
 docker run -p 8080:8080 justcgh/moscow-time-app:latest
 ```
+
+## Distroless Docker Version
+
+In this version of the app, I've switched to a **Distroless** Docker image for better performance, security, and efficiency.
+
+### How to Build the Docker Image
+
+1. Ensure you have Docker installed on your machine.
+2. Navigate to the `app_python` directory where the `Dockerfile` is located.
+3. Run the following command to build the Docker image:
+
+   ```bash
+   docker build  -t moscow-time-app-distroless -f distroless.Dockerfile .
+   ```
+
+   This will build the Docker image based on the `distroless.Dockerfile`.
+
+### How to Pull the Docker Image
+
+If you want to pull the pre-built image from a Docker Hub, use the following command:
+
+```bash
+docker pull justcgh/moscow-time-app-distroless:latest
+```
+
+### How to Run the Docker Container
+
+Once the image is built or pulled, you can run the container with this commands.
+If you built the image use this script:
+
+```bash
+docker run -p 8080:8080 moscow-time-app-distroless
+```
+
+If you pulled it:
+
+```bash
+docker run -p 8080:8080 justcgh/moscow-time-app-distroless:latest
+```
+
+This will start the container and expose the application on port `8080`. You can access the app by navigating to `http://localhost:8080` in your browser.

@@ -1,18 +1,23 @@
-FROM python:3.10-slim AS build-env
-
-COPY . /app
+FROM python:3.11-slim as build
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt && cp $(which uvicorn) /app
+COPY requirements.txt ./
 
-FROM gcr.io/distroless/python3
+RUN pip install --no-cache-dir -r requirements.txt 
 
-COPY --from=build-env /app /app
-COPY --from=build-env /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
-ENV PYTHONPATH=/usr/local/lib/python3.10/site-packages
+RUN cp $(which uvicorn) /app/uvicorn
 
-WORKDIR /app
+COPY app/ ./app
+
+FROM gcr.io/distroless/python3-debian12:nonroot
+
+COPY --from=build /app /python-app
+
+COPY --from=build /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+ENV PYTHONPATH=/usr/local/lib/python3.11/site-packages
+
+WORKDIR /python-app
 
 EXPOSE 8080
 
