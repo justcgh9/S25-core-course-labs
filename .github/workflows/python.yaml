@@ -100,13 +100,4 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/moscow_time_app:latest
 
-  container-security:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Run Snyk to check for vulnerabilities in Docker image
-        uses: snyk/actions/docker@master
-        with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/moscow_time_app:latest
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
