@@ -1,3 +1,4 @@
+[![moscow_time_app](https://github.com/justcgh9/S25-core-course-labs/actions/workflows/python.yaml/badge.svg)](https://github.com/justcgh9/S25-core-course-labs/actions/workflows/python.yaml)
 # Moscow Time Web App
 
 This is a python application built with FastAPI and jinja2 to display current time in Moscow.
