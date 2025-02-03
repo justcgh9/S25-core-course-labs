@@ -63,6 +63,7 @@ jobs:
 
       - name: Run Snyk to Check for Vulnerabilities in Python Dependencies
         uses: snyk/actions/python-3.10@master
+        run: cd app_python && snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
