@@ -33,7 +33,7 @@ jobs:
       - name: Lint with Ruff
         run: |
           pip install ruff
-          ruff .
+          ruff check .
 
   test:
     runs-on: ubuntu-latest
