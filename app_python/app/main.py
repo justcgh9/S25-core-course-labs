@@ -15,5 +15,6 @@ async def get_moscow_time(request: Request):
     current_time = datetime.now(moscow_timezone).strftime("%Y-%m-%d %H:%M:%S")
 
     return templates.TemplateResponse(
-        "index.html", {"request": request, "time": current_time}
-    )
+    request, "index.html", {"time": current_time}
+)
+
