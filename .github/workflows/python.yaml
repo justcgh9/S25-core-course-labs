@@ -60,6 +60,15 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+          cache: pip
+
+      - name: Install Dependencies
+        run: pip install -r ./app_python/requirements.txt
 
       - name: Run Snyk to Check for Vulnerabilities in Python Dependencies
         uses: snyk/actions/setup@master
