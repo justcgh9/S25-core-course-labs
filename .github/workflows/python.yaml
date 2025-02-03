@@ -72,7 +72,7 @@ jobs:
 
       - name: Run Snyk to Check for Vulnerabilities in Python Dependencies
         uses: snyk/actions/setup@master
-      - run: cd app_python && snyk test
+      - run: cd app_python && snyk fix
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
