@@ -1,3 +1,2 @@
 url-shortener
-config/*.yaml
 storage/storage.db
