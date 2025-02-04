@@ -86,5 +86,6 @@ jobs:
           file: ./app_go/distroless.Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/url-shortener-distroless:latest
-
+          build-args: |
+            config_path=./config/local.yaml
 
