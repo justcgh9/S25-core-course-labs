@@ -1,5 +1,7 @@
 # URL shortener web app
 
+[![url-shortener](https://github.com/justcgh9/S25-core-course-labs/actions/workflows/go.yaml/badge.svg)](https://github.com/justcgh9/S25-core-course-labs/actions/workflows/go.yaml)
+
 This is an url shortener developed with golang and htmx
 
 ## Features
