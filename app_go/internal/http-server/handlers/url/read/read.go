@@ -14,7 +14,7 @@ import (
 )
 
 type Request struct {
-    Alias string
+	Alias string
 }
 
 type Response struct {
@@ -23,11 +23,11 @@ type Response struct {
 }
 
 const (
-    alias = "alias"
+	alias = "alias"
 )
 
 type URLReader interface {
-    GetURL(alias string) (string, error)
+	GetURL(alias string) (string, error)
 }
 
 func New(log *slog.Logger, urlReader URLReader) http.HandlerFunc {
@@ -41,22 +41,22 @@ func New(log *slog.Logger, urlReader URLReader) http.HandlerFunc {
 
 		var req Request
 
-        req.Alias = chi.URLParam(r, alias)
-        if len(req.Alias) <= 0 {
-            log.Error(
-                "incorrect alias url parameter",
-                slog.String("alias", req.Alias),
-            )
-            render.Status(r, http.StatusUnprocessableEntity)
-            render.JSON(w, r, response.Error("incorrect alias"))
-            return
-        }
+		req.Alias = chi.URLParam(r, alias)
+		if len(req.Alias) <= 0 {
+			log.Error(
+				"incorrect alias url parameter",
+				slog.String("alias", req.Alias),
+			)
+			render.Status(r, http.StatusUnprocessableEntity)
+			render.JSON(w, r, response.Error("incorrect alias"))
+			return
+		}
 
 		url, err := urlReader.GetURL(req.Alias)
 		if errors.Is(err, storage.ErrURLNotFound) {
 			log.Error("no URL with such alias", slog.String("alias", req.Alias))
 
-            render.Status(r, http.StatusNotFound)
+			render.Status(r, http.StatusNotFound)
 			render.JSON(w, r, response.Error("no URl with such alias"))
 
 			return
@@ -64,7 +64,7 @@ func New(log *slog.Logger, urlReader URLReader) http.HandlerFunc {
 		if err != nil {
 			log.Error("failed to find url", sl.Err(err))
 
-            render.Status(r, http.StatusInternalServerError)
+			render.Status(r, http.StatusInternalServerError)
 			render.JSON(w, r, response.Error("failed to find url"))
 
 			return
@@ -72,13 +72,13 @@ func New(log *slog.Logger, urlReader URLReader) http.HandlerFunc {
 
 		log.Info("url found", slog.String("alias", req.Alias))
 
-        http.Redirect(w, r, url, http.StatusFound)
+		http.Redirect(w, r, url, http.StatusFound)
 	}
 }
 
 func responseOK(w http.ResponseWriter, r *http.Request, url string) {
 	render.JSON(w, r, Response{
 		Response: response.OK(),
-		Url:    url,
+		Url:      url,
 	})
 }

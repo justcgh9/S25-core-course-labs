@@ -109,11 +109,11 @@ docker run -p 8080:8080 justcgh/url-shortener
 
 ## **Distroless Image Version**  
 
-A Distroless-based image is also available for enhanced security and minimal footprint. 
+A Distroless-based image is also available for enhanced security and minimal footprint.
 
 ### **How to build the Distroless Image?**  
 
-There are also db issues here. SQLite needs an access to the filesystem to operate correctly, which is available only for /tmp folder (I spent quite a lot of time to find that out) . That's why I would recommend to put something like /tmp/storage.db to your config as db path. 
+There are also db issues here. SQLite needs an access to the filesystem to operate correctly, which is available only for /tmp folder (I spent quite a lot of time to find that out) . That's why I would recommend to put something like /tmp/storage.db to your config as db path.
 
 ```sh
 docker build --build-arg config_path=./config/local.yaml -t url-shortener-distroless -f distroless.Dockerfile .
@@ -129,4 +129,23 @@ docker pull justsgh/url-shortener-distroless
 
 ```sh
 docker run -p 8080:8080 url-shortener-distroless
+```
+
+## Unit Testing Summary
+
+I implemented unit tests for both the HTTP handlers and the SQLite storage layer. You can see a little bit of information below. However, if you need more of it, I tried to document the tests pretty heavily, so you might look at the source files.
+
+- **HTTP Handlers:**  
+  - Tested the *Save*, *Read*, and *Delete* handlers using table-driven tests.
+  - Covered both success and error scenarios (e.g., validation errors, duplicate entries, not found).
+  - Used mocks to isolate handler logic from external dependencies.
+
+- **SQLite Storage:**  
+  - Verified CRUD operations (save, retrieve, list, delete) using an in-memory database.
+  - Ensured proper error handling for duplicate entries and not-found cases.
+
+This approach promotes clarity and maintainability by isolating functionality and covering edge cases. To run all tests, use:
+
+```bash
+go test -v ./...
 ```

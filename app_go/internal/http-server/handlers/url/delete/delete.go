@@ -13,7 +13,7 @@ import (
 )
 
 type Request struct {
-    Alias string
+	Alias string
 }
 
 type Response struct {
@@ -21,11 +21,11 @@ type Response struct {
 }
 
 const (
-    alias = "alias"
+	alias = "alias"
 )
 
 type URLDeleter interface {
-    DeleteURL(alias string) error
+	DeleteURL(alias string) error
 }
 
 func New(log *slog.Logger, urlDeleter URLDeleter) http.HandlerFunc {
@@ -39,22 +39,22 @@ func New(log *slog.Logger, urlDeleter URLDeleter) http.HandlerFunc {
 
 		var req Request
 
-        req.Alias = r.URL.Query().Get(alias)
-        if len(req.Alias) <= 0 {
-            log.Error(
-                "incorrect alias url parameter",
-                slog.String("alias", req.Alias),
-            )
-            render.Status(r, http.StatusUnprocessableEntity)
-            render.JSON(w, r, response.Error("incorrect alias"))
-            return
-        }
+		req.Alias = r.URL.Query().Get(alias)
+		if len(req.Alias) <= 0 {
+			log.Error(
+				"incorrect alias url parameter",
+				slog.String("alias", req.Alias),
+			)
+			render.Status(r, http.StatusUnprocessableEntity)
+			render.JSON(w, r, response.Error("incorrect alias"))
+			return
+		}
 
-        err := urlDeleter.DeleteURL(req.Alias)
+		err := urlDeleter.DeleteURL(req.Alias)
 		if errors.Is(err, storage.ErrURLNotFound) {
 			log.Error("no URL with such alias", slog.String("alias", req.Alias))
 
-            render.Status(r, http.StatusNotFound)
+			render.Status(r, http.StatusNotFound)
 			render.JSON(w, r, response.Error("no URl with such alias"))
 
 			return
@@ -62,7 +62,7 @@ func New(log *slog.Logger, urlDeleter URLDeleter) http.HandlerFunc {
 		if err != nil {
 			log.Error("failed to add url", sl.Err(err))
 
-            render.Status(r, http.StatusInternalServerError)
+			render.Status(r, http.StatusInternalServerError)
 			render.JSON(w, r, response.Error("failed to add url"))
 
 			return
@@ -75,5 +75,5 @@ func New(log *slog.Logger, urlDeleter URLDeleter) http.HandlerFunc {
 }
 
 func responseOK(w http.ResponseWriter, r *http.Request) {
-    w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusOK)
 }

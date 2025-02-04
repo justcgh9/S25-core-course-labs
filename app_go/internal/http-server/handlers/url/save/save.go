@@ -46,7 +46,7 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 		if err != nil {
 			log.Error("failed to decode request body", slog.String("error", err.Error()))
 
-            render.Status(r, http.StatusUnprocessableEntity)
+			render.Status(r, http.StatusUnprocessableEntity)
 			render.JSON(w, r, response.Error("failed to decode request"))
 
 			return
@@ -58,7 +58,7 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 			log.Error("invalid request", sl.Err(err))
 
 			validateErr := err.(validator.ValidationErrors)
-            render.Status(r, http.StatusUnprocessableEntity)
+			render.Status(r, http.StatusUnprocessableEntity)
 			render.JSON(w, r, response.ValidationError(validateErr))
 
 			return
@@ -73,7 +73,7 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 		if errors.Is(err, storage.ErrURLExists) {
 			log.Info("url already exists", slog.String("url", req.URL))
 
-            render.Status(r, http.StatusConflict)
+			render.Status(r, http.StatusConflict)
 			render.JSON(w, r, response.Error("url already exists"))
 
 			return
@@ -81,7 +81,7 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 		if err != nil {
 			log.Error("failed to add url", sl.Err(err))
 
-            render.Status(r, http.StatusInternalServerError)
+			render.Status(r, http.StatusInternalServerError)
 			render.JSON(w, r, response.Error("failed to add url"))
 
 			return
@@ -93,27 +93,26 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 	}
 }
 
-
 func responseOK(w http.ResponseWriter, r *http.Request, alias string) {
-    tmpl := template.Must(template.New("url_list_item").Parse(`
+	tmpl := template.Must(template.New("url_list_item").Parse(`
 <li id="url-{{.Alias}}">
   <a href="{{.Path}}" target="_blank">{{.Alias}}</a>
   <button hx-delete="/urls?alias={{.Alias}}" hx-target="#url-{{.Alias}}" hx-swap="outerHTML">Delete</button>
 </li>
 `))
 
-    relativePath := "/urls/" + alias
-    w.Header().Set("Content-Type", "text/html")
-    err := tmpl.Execute(w, struct {
-        Alias string
-        Path  string
-    }{
-        Alias: alias,
-        Path:  relativePath,
-    })
+	relativePath := "/urls/" + alias
+	w.Header().Set("Content-Type", "text/html")
+	err := tmpl.Execute(w, struct {
+		Alias string
+		Path  string
+	}{
+		Alias: alias,
+		Path:  relativePath,
+	})
 
-    if err != nil {
-        http.Error(w, "Failed to render template", http.StatusInternalServerError)
-        return
-    }
+	if err != nil {
+		http.Error(w, "Failed to render template", http.StatusInternalServerError)
+		return
+	}
 }

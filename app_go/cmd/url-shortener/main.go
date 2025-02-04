@@ -48,9 +48,9 @@ func main() {
 	router.Use(middleware.URLFormat)
 
 	router.Post("/urls", save.New(log, storage))
-    router.Delete("/urls", delete.New(log, storage))
-    router.Get("/urls/{alias}", read.New(log, storage))
-    router.Get("/manage", manage.New(log, storage, tmpl))
+	router.Delete("/urls", delete.New(log, storage))
+	router.Get("/urls/{alias}", read.New(log, storage))
+	router.Get("/manage", manage.New(log, storage, tmpl))
 	server := &http.Server{
 		Addr:         cfg.Address,
 		Handler:      router,
