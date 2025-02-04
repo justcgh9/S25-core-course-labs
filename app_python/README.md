@@ -1,5 +1,6 @@
-[![moscow_time_app](https://github.com/justcgh9/S25-core-course-labs/actions/workflows/python.yaml/badge.svg)](https://github.com/justcgh9/S25-core-course-labs/actions/workflows/python.yaml)
 # Moscow Time Web App
+
+[![moscow_time_app](https://github.com/justcgh9/S25-core-course-labs/actions/workflows/python.yaml/badge.svg)](https://github.com/justcgh9/S25-core-course-labs/actions/workflows/python.yaml)
 
 This is a python application built with FastAPI and jinja2 to display current time in Moscow.
 
@@ -119,3 +120,18 @@ docker run -p 8080:8080 justcgh/moscow-time-app-distroless:latest
 ```
 
 This will start the container and expose the application on port `8080`. You can access the app by navigating to `http://localhost:8080` in your browser.
+
+## Unit tests
+
+Our application only contains one function, which has no user input, so the behavior can be tested using one proper unit test. I also wanted to verify that response comes in a proper format, so I've chosen fastapi test client. I have simulated a request and tested the assertions about response data.
+
+## CI workflow
+
+This repository uses a GitHub Actions workflow that runs on every push and pull request (with filters for relevant paths). The workflow executes in four sequential stages:
+
+1. **Linting:** Checks code quality with Ruff.
+2. **Testing:** Runs unit tests with pytest.
+3. **Security:** Scans dependencies for vulnerabilities using Snyk.
+4. **Build & Deploy:** Builds and pushes a Docker image to DockerHub.
+
+Each stage only runs if the previous one succeeds.
