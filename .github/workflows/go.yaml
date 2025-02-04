@@ -83,8 +83,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./app_go/Dockerfile
+          file: ./app_go/distroless.Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/url-shortener:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/url-shortener-distroless:latest
 
 
