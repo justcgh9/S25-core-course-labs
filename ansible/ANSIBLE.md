@@ -110,3 +110,94 @@ Here is the output of `ansible-inventory -i inventory/default_aws_ec2.yml --list
 ├── @_Ansible_ec2
 │   ├── ec2-13-60-234-13.eu-north-1.compute.amazonaws.com
 ```
+
+## **Web App Deployment**
+
+### Configuring Ansible
+
+I have started with the bonus task from the beginning. I have created two playbooks, they're almost identical. What I do, is I pull the image from dockerhub and run it in a container using docker-compose. It is essential that you wipe if you want to stop one application and run another (or you may change the vm's running port, which is 80 by default in the docker-compose template). 
+
+So, what I did was:
+
+1. Set up dependencies
+2. Provide variables
+3. Create wipe and main tasks
+4. Set up the playbooks
+
+---
+
+Below is the output of running command `ansible-playbook playbooks/dev/app_go/main.yml -i inventory`. I will only show one output, since they're completely identical. 
+
+---
+
+**PLAY [Deploy Go Application]**  
+*Warning:* Found variable using reserved name: `tags`  
+
+**TASK [Gathering Facts]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : include_tasks]**  
+→ Included: `/home/justcgh9/projects/pet/DevOps/S25-core-course-labs/ansible/roles/docker/tasks/install_docker.yml`  
+→ Target: ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : Install required packages]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : Create Docker keyring directory]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : Download Docker GPG key]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : Add Docker repository]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : Install Docker packages]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : include_tasks]**  
+→ Included: `/home/justcgh9/projects/pet/DevOps/S25-core-course-labs/ansible/roles/docker/tasks/install_compose.yml`  
+→ Target: ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : Download Docker Compose binary]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : Enable Docker service to start on boot]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : Add current user to docker group]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [docker : Copy secure Docker daemon configuration]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+---
+
+**TASK [web_app : Pull Docker image for web application]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [web_app : Ensure deployment directory exists]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [web_app : Render docker-compose file for web application]**  
+✔ ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+**TASK [web_app : Start web application container using docker-compose]**  
+✱ Changed: ec2-13-60-234-13.eu-north-1.compute.amazonaws.com  
+
+---
+
+**PLAY RECAP**  
+| Host | ✅ OK | 🔄 Changed | 🚫 Unreachable | ❌ Failed | ⏭️ Skipped | 🛠️ Rescued | 🔕 Ignored |  
+|------|----|---------|-------------|--------|---------|---------|---------|  
+| ec2-13-60-234-13.eu-north-1.compute.amazonaws.com | **16** | **1** | **0** | **0** | **0** | **0** | **0** |  
+
+Deployment completed successfully.  
+
+---
+
+### AWS Configuration
+
+After I did all the ansible work, I needed to adjust some inbound rules of the security group of the running instance, so that http port 80 would become available. Then, I was able to see my web app up and running completely fine. I am not sure when you will be checking this, but the [application](http://13.60.234.13/manage) may still be up. Below is the proof of work.
+
+![url-shortener](/ansible/-2147483648_-231609.jpg)
