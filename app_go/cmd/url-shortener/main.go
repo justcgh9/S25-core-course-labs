@@ -16,6 +16,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 const (
@@ -23,6 +25,20 @@ const (
 	envDevelopment = "dev"
 	envProduction  = "prod"
 )
+
+var (
+	httpRequestsTotal = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "http_requests_total",
+			Help: "Number of HTTP requests received",
+		},
+		[]string{"method", "path"},
+	)
+)
+
+func init() {
+	prometheus.MustRegister(httpRequestsTotal)
+}
 
 func main() {
 	cfg := config.MustLoad()
@@ -47,10 +63,20 @@ func main() {
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
 
+	router.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			httpRequestsTotal.WithLabelValues(r.Method, r.URL.Path).Inc()
+			next.ServeHTTP(w, r)
+		})
+	})
+
 	router.Post("/urls", save.New(log, storage))
 	router.Delete("/urls", delete.New(log, storage))
 	router.Get("/urls/{alias}", read.New(log, storage))
 	router.Get("/manage", manage.New(log, storage, tmpl))
+
+	router.Handle("/metrics", promhttp.Handler())
+	
 	server := &http.Server{
 		Addr:         cfg.Address,
 		Handler:      router,
