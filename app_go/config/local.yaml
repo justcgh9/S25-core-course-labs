@@ -1,4 +1,4 @@
-env: "local"
+env: "dev"
 storage_path: "/tmp/storage.db"
 http_server:
   address: "0.0.0.0:8080"

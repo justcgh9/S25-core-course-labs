@@ -19,6 +19,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 USER appuser
 RUN chmod +x run.sh
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["sh", "./run.sh"]
